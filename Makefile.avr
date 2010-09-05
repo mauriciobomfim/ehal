@@ -1,0 +1,43 @@
+CC=avr-gcc
+AR=avr-ar
+
+MCU=atmega8
+F_CPU=8000000
+CFLAGS=-Wall -ansi -Os 
+INCLUDE_DIR=-I. -I./src -I./src/specific/ -I./src/specific/avr/ -I./src/specific/avr/$(MCU)/
+
+ALL_CFLAGS=-mmcu=$(MCU) -DF_CPU=$(F_CPU) $(CFLAGS) $(INCLUDE_DIR)
+LDFLAGS=
+GENERIC_SRC=						\
+	src/pio/pio_pin_high.c				\
+	src/pio/pio_pin_low.c
+SPECIFIC_SRC=						\
+	src/specific/avr/$(MCU)/pio_port_dirmask.c	\
+	src/specific/avr/$(MCU)/pio_port_pullupmask.c	\
+	src/specific/avr/$(MCU)/pio_port_readmask.c	\
+	src/specific/avr/$(MCU)/pio_port_validate.c	\
+	src/specific/avr/$(MCU)/pio_port_valmask.c
+
+HEADERS=						\
+	src/specific/avr/$(MCU)/pio_specific.h
+
+LIB=libehal-$(MCU).a
+
+SRC=$(GENERIC_SRC) $(SPECIFIC_SRC)
+
+OBJ=$(SRC:.c=.o)
+
+all: $(LIB)
+
+$(LIB): $(OBJ)
+	$(AR) rcs $@ $(OBJ)
+
+%.elf: $(OBJ)
+	$(CC) $(ALL_CFLAGS) $^ $@ $(LDFLAGS)
+
+.c.o:
+	$(CC) -c -o $@ $< $(ALL_CFLAGS)
+
+.PHONY:
+clean:
+	rm -f $(OBJ) $(LIB)

@@ -1,0 +1,75 @@
+#ifndef __GENERIC_PIO_H
+#define __GENERIC_PIO_H
+
+#include "types.h"
+#include "pio_specific.h"
+
+/* specify these functions on specific/plat_name/pio.c
+ * pio_port and pio_pin should be specified on specific_pio.h
+ */
+
+/* functions that pio.c have to implement */
+void pio_port_valmask		(pio_port p, pio_port val, pio_port mask);
+void pio_port_dirmask		(pio_port p, pio_port in, pio_port mask);
+void pio_port_pullupmask	(pio_port p, pio_port up, pio_port mask);
+pio_port pio_port_readmask	(pio_port p, pio_port mask);
+u08  pio_port_validate		(pio_port p);
+
+/* for easier usage, implemented in pio_generic.c */
+void pio_pin_high	(pio_pin p);
+void pio_pin_low	(pio_pin p);
+void pio_pin_in		(pio_pin p);
+void pio_pin_out	(pio_pin p);
+void pio_pin_pulluphigh	(pio_pin p);
+void pio_pin_pulluplow	(pio_pin p);
+u08  pio_pin_read	(pio_pin p);
+
+void pio_port_val		(pio_port p, pio_port val);
+void pio_port_dir		(pio_port p, pio_port in);
+void pio_port_pullup		(pio_port p, pio_port up);
+pio_port pio_port_read		(pio_port p);
+
+/* Pin symbolic names for easy usage. */
+#define PIO_PIN_NAME(X) ((pio_port)1<<(X))
+
+enum pio_pin_names {
+	P0  = PIO_PIN_NAME( 0),
+	P1  = PIO_PIN_NAME( 1),
+	P2  = PIO_PIN_NAME( 2),
+	P3  = PIO_PIN_NAME( 3),
+	P4  = PIO_PIN_NAME( 4),
+	P5  = PIO_PIN_NAME( 5),
+	P6  = PIO_PIN_NAME( 6),
+	P7  = PIO_PIN_NAME( 7),
+#if PIO_SIZE > 8
+	P8  = PIO_PIN_NAME( 8),
+	P9  = PIO_PIN_NAME( 9),
+	P10 = PIO_PIN_NAME(10),
+	P11 = PIO_PIN_NAME(11),
+	P12 = PIO_PIN_NAME(12),
+	P13 = PIO_PIN_NAME(13),
+	P14 = PIO_PIN_NAME(14),
+	P15 = PIO_PIN_NAME(15),
+#endif
+#if PIO_SIZE > 16
+	P16 = PIO_PIN_NAME(16),
+	P17 = PIO_PIN_NAME(17),
+	P18 = PIO_PIN_NAME(18),
+	P19 = PIO_PIN_NAME(19),
+	P20 = PIO_PIN_NAME(20),
+	P21 = PIO_PIN_NAME(21),
+	P22 = PIO_PIN_NAME(22),
+	P23 = PIO_PIN_NAME(23),
+	P24 = PIO_PIN_NAME(24),
+	P25 = PIO_PIN_NAME(25),
+	P26 = PIO_PIN_NAME(26),
+	P27 = PIO_PIN_NAME(27),
+	P28 = PIO_PIN_NAME(28),
+	P29 = PIO_PIN_NAME(29),
+	P30 = PIO_PIN_NAME(30),
+	P31 = PIO_PIN_NAME(31),
+#endif
+};
+#undef PIO_PIN_NAME
+
+#endif

@@ -1,4 +1,4 @@
-#include "pio_generic.h"
+#include "pio.h"
 
 void pio_pin_low (pio_pin p)
 {
