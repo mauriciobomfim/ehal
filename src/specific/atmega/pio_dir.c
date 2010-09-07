@@ -1,6 +1,6 @@
 #include "pio_specific.h"
 
-void pio_port_dirmask (pio_port p, pio_port val, pio_port mask)
+void pio_dir (pio_port p, pio_port val, pio_port mask)
 {
 	switch(p){
 #if defined(_AVR_IOM8_H_) \

@@ -1,6 +1,6 @@
 #include "pio_specific.h"
 
-pio_port pio_port_readmask (pio_port p, pio_port mask)
+pio_port pio_read (pio_port p, pio_port mask)
 {
 	switch(p){
 #if defined(_AVR_IOM8_H_) \

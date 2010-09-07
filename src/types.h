@@ -1,6 +1,7 @@
 #ifndef __TYPES_H
 #define __TYPES_H
 
+/* custom types */
 typedef unsigned char	u08;
 typedef unsigned short	u16;
 typedef unsigned int	u32;

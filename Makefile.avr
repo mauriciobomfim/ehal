@@ -12,17 +12,17 @@ INCLUDE_DIR=					\
 
 ALL_CFLAGS=-mmcu=$(MCU) -DF_CPU=$(F_CPU) $(CFLAGS) $(INCLUDE_DIR)
 LDFLAGS=
-GENERIC_SRC=						\
-	src/pio/pio_pin_high.c				\
+GENERIC_SRC=					\
+	src/pio/pio_pin_high.c			\
 	src/pio/pio_pin_low.c
-SPECIFIC_SRC=						\
-	src/specific/$(ARCH)/pio_port_dirmask.c	\
-	src/specific/$(ARCH)/pio_port_pullupmask.c	\
-	src/specific/$(ARCH)/pio_port_readmask.c	\
-	src/specific/$(ARCH)/pio_port_validate.c	\
-	src/specific/$(ARCH)/pio_port_valmask.c
+SPECIFIC_SRC=					\
+	src/specific/$(ARCH)/pio_dir.c		\
+	src/specific/$(ARCH)/pio_pullup.c	\
+	src/specific/$(ARCH)/pio_read.c		\
+	src/specific/$(ARCH)/pio_validate.c	\
+	src/specific/$(ARCH)/pio_val.c
 
-HEADERS=						\
+HEADERS=					\
 	src/specific/$(ARCH)/pio_specific.h
 
 LIB=libehal-$(MCU).a
@@ -33,7 +33,7 @@ OBJ=$(SRC:.c=.o)
 
 all: $(LIB)
 
-$(LIB): $(OBJ)
+$(LIB): $(OBJ) $(HEADERS)
 	$(AR) rcs $@ $(OBJ)
 
 %.elf: $(OBJ)
