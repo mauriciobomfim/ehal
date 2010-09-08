@@ -1,0 +1,57 @@
+digraph G {
+	node [
+		fontname = "Bitstream Vera Sans Mono"
+		fontsize = 8
+		shape = "record"
+	]
+        edge [
+		fontname = "Bitstream Vera Sans Mono"
+		fontsize = 8
+        ]
+
+	subgraph cluster_ehal {
+		label="ehal";
+
+/*------------------------------------------------------------------------*/
+		pio [ label="{\
+pio\
+||\
++void		pio_val		(pio_port p, pio_port val, pio_port mask)\l\
++void		pio_dir		(pio_port p, pio_port val, pio_port mask)\l\
++void		pio_pullup	(pio_port p, pio_port val, pio_port mask)\l\
++pio_port	pio_read	(pio_port p, pio_port mask)\l}" ]
+
+/*------------------------------------------------------------------------*/
+		spim [ label="{\
+spim\
+||\
++void	spim_init (s, cpol, cpha)\l\
++data	spim_xmit (s, data)\l}" ]
+
+/*------------------------------------------------------------------------*/
+		uart [ label="{\
+uart\
+||\
++uart_init (u, baud) : void\l\
++uart_send (u, data) : void\l\
++uart_recv (u) : data\l}" ]
+
+/*------------------------------------------------------------------------*/
+		i2c
+		tmr
+		adc
+		pwm
+		rtc
+		int
+		ccp
+		eth
+	}
+
+	subgraph cluster_genlib {
+		label="genlib";
+		{hd44780 ks0108b} -> pio;
+		{mmc} -> spim;
+		{gps} -> uart;
+		{ds1307} -> i2c;
+	}
+}

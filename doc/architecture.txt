@@ -1,5 +1,5 @@
 hal modules: pio, spi, uart, i2c, tmr, adc, pwm, rtc, int, ccp, eth
-FIXME: Check if communications will be with a fifo and non-blocking option.
+FIXME: create fifo and non-blocking interfaces?
 
 
 Interfaces:
@@ -26,6 +26,7 @@ uart:
 	void	uart_send	(u08 u);
 	u08	uart_recv	(u08 u);
 
+
 i2c:
 	void	i2cm_init	(u08 i, u08 freq);
 	u08	i2cm_addr	(u08 i, u08 addr);
@@ -35,5 +36,7 @@ i2c:
 	void	i2cm_stop	(u08 i);
 	
 	void	i2cs_init	(u08 i, u08 addr);
+
+
 tmr:
 	void	tmr_
