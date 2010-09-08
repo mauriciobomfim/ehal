@@ -4,34 +4,21 @@
 #include "types.h"
 #include "pio_specific.h"
 
-/* specify these functions on specific/plat_name/pio.c
- * pio_port and pio_pin should be specified on specific_pio.h
- */
+/* specify these functions on specific/arch/mcu/pio*.c
+ * pio_port type/size must be specified on specific_pio.h */
 
 /* functions that pio.c have to implement */
-void pio_port_valmask		(pio_port p, pio_port val, pio_port mask);
-void pio_port_dirmask		(pio_port p, pio_port in, pio_port mask);
-void pio_port_pullupmask	(pio_port p, pio_port up, pio_port mask);
-pio_port pio_port_readmask	(pio_port p, pio_port mask);
-u08  pio_port_validate		(pio_port p);
+void pio_val		(pio_port p, pio_port val, pio_port mask);
+void pio_dir		(pio_port p, pio_port in, pio_port mask);
+void pio_pullup		(pio_port p, pio_port up, pio_port mask);
+pio_port pio_read	(pio_port p, pio_port mask);
+u08  pio_validate	(pio_port p);
 
-/* for easier usage, implemented in pio_generic.c */
-void pio_pin_high	(pio_pin p);
-void pio_pin_low	(pio_pin p);
-void pio_pin_in		(pio_pin p);
-void pio_pin_out	(pio_pin p);
-void pio_pin_pulluphigh	(pio_pin p);
-void pio_pin_pulluplow	(pio_pin p);
-u08  pio_pin_read	(pio_pin p);
+/* end of functions to implement */
 
-void pio_port_val		(pio_port p, pio_port val);
-void pio_port_dir		(pio_port p, pio_port in);
-void pio_port_pullup		(pio_port p, pio_port up);
-pio_port pio_port_read		(pio_port p);
-
-/* Pin symbolic names for easy usage. */
 #define PIO_PIN_NAME(X) ((pio_port)1<<(X))
 
+/* Pin symbolic names for easy usage. */
 enum pio_pin_names {
 	P0  = PIO_PIN_NAME( 0),
 	P1  = PIO_PIN_NAME( 1),

@@ -3,7 +3,7 @@ AR=avr-ar
 
 #FIXME: set F_CPU somewhere else
 F_CPU=8000000
-CFLAGS=-Wall -ansi -Os -MMD -MP #-MF
+CFLAGS=-Wall -ansi -Os
 INCLUDE_DIR=					\
 		-I.				\
 		-I./src				\
