@@ -1,0 +1,119 @@
+digraph G {
+	node [	fontname = "Bitstream Vera Sans Mono"
+		shape = "record"
+		fontsize = 12 ]
+        edge [	fontname = "Bitstream Vera Sans Mono"
+		fontsize = 8 ]
+
+/*------------------------------------------------------------------------*/
+	subgraph cluster_ehal {
+		label="ehal";
+		pio [ label="{\
+pio\
+|\
+- write : pio_port\l\
+- direction : pio_port\l\
+- read : pio_port\l\
+|\
++ pio_val	(p : u08, val : pio_port, mask : pio_port) : void\l\
++ pio_dir	(p : u08, val : pio_port, mask : pio_port) : void\l\
++ pio_pullup	(p : u08, val : pio_port, mask : pio_port) : void\l\
++ pio_read	(p : u08)\l\
+}" ]
+		spim [ label="{\
+spim\
+|\
+|\
++ void	spim_init (s : u08, freq : u08, cpol : u08, cpha : u08)\l\
++ void	spim_buswidth(s : u08, buswidth : u08)\l\
++ data	spim_transmit (s : u08, data)\l\
+}" ]
+		uart [ label="{\
+uart\
+||\
++ uart_init	(u : u08, baud) : void\l\
++ uart_send	(u : u08, data) : void\l\
++ uart_recv	(u : u08) : u08\l\
+}" ]
+		i2cm [ label="{\
+i2cm\
+||\
++ i2cm_init (i : u08, freq : u08) : void\
+}" ]
+		tmr [ label="{\
+tmr\
+||\
+}" ]
+		adc [ label="{\
+adc\
+||\
+}" ]
+		pwm [ label="{\
+pwm\
+||\
+}" ]
+		rtc [ label="{\
+rtc\
+||\
+}" ]
+		int [ label="{\
+int\
+||\
+}" ]
+		ccp [ label="{\
+ccp\
+||\
+}" ]
+		eth [ label="{\
+eth\
+||\
+}" ]
+		dma [ label="{\
+dma\
+||\
+}" ]
+	}
+/*------------------------------------------------------------------------*/
+	subgraph cluster_genlib {
+		label="genlib";
+
+		hd44780 [ label="{\
+hd44780\
+|\
+- datap : pio_port\l\
+- cmdp : pio_port\l\
+- data_pin0 : u08\l\
+- en : u08\l\
+- rs : u08\l\
+- rw : u08\l\
+- x : u08\l\
+- y : u08\l\
+|\
++ hd44780_init (d : hd44780_t) : void\l\
++ hd44780_putc (d : hd44780_t, c : char) : void\l\
++ hd44780_puts (d : hd44780_t, *s: const char) : void\l\
++ hd44780_goto (d : hd44780_t, x, y) : void\l\
++ hd44780_getc (d : hd44780_t) : char\l\
+}" ]
+		ks0108b [ label="{\
+ks0108b\
+|\
+- datap : pio_port\l\
+- cmdp : pio_port\l\
+- data_pin0 : u08\l\
+- en : u08\l\
+- rs : u08\l\
+- rw : u08\l\
+- cs : u08\l\
+- x : u08\l\
+- y : u08\l\
+|\
++ ks0108b_init (d : ks0108b_t) : void\l\
++ ks0108b_putc (d : ks0108b_t, c : char) : void\l\
++ ks0108b_puts (d : ks0108b_t, *s : const char) : void\l\
++ ks0108b_goto (d : ks0108b_t, x : u08, y : 08) : void\l\
+}" ]
+		hd44780 -> pio;
+		ks0108b -> pio;
+	}
+}
