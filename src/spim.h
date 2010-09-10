@@ -1,5 +1,8 @@
+#ifndef __SPIM_H_
+#define __SPIM_H_
+
 #include "spim_specific.h"
 
-void spim_init (u08 s, u08 freq, u08 cpol, u08 cpha);
-u08 spim_send (u08 s, u08 data);
-spim_t spim_xmit (u08 s, spim_t data);
+#define spim_init( x, y, w, z ) GLUE( spim, GLUE( x, init( y, w, z )) )
+
+#endif

@@ -9,16 +9,16 @@ digraph G {
 	subgraph cluster_ehal {
 		label="ehal";
 		pio [ label="{\
-pio\
+pioN\
 |\
 - write : pio_data_t\l\
 - direction : pio_data_t\l\
 - read : pio_data_t\l\
 |\
-+ pio_write	(p : u08, val : pio_data_t, mask : pio_data_t) : void\l\
-+ pio_read	(p : u08) : pio_data_t\l\
-+ pio_dir	(p : u08, dir : pio_data_t, mask : pio_data_t) : void\l\
-+ pio_pullup	(p : u08, pull : pio_data_t, mask : pio_data_t) : void\l\
++ pioN_write	(val : pio_data_t, mask : pio_data_t) : void\l\
++ pioN_read	() : pio_data_t\l\
++ pioN_dir	(dir : pio_data_t, mask : pio_data_t) : void\l\
++ pioN_pullup	(pull : pio_data_t, mask : pio_data_t) : void\l\
 }" ]
 		spim [ label="{\
 spim\

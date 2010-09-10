@@ -3,8 +3,11 @@ AR=avr-ar
 MKDIR=mkdir
 CP=cp
 
-LIB_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/lib/
-INC_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/include/ehal/
+# Get the lib folder based on the toolchain location.
+LIB_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/lib
+INC_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/include/ehal
+
+# Get folders from within ehal.
 GENERIC_PATH=src
 SPECIFIC_PATH=src/specific/$(ARCH)
 
@@ -16,12 +19,9 @@ INCLUDE_DIR=					\
 		-I./src				\
 		-I./src/specific/		\
 		-I./$(SPECIFIC_PATH)
-ALL_CFLAGS=-mmcu=$(MCU) -DF_CPU=$(F_CPU) $(CFLAGS) $(INCLUDE_DIR)
+ALL_CFLAGS=-mmcu=$(MCU) $(CFLAGS) $(INCLUDE_DIR)
 
 LDFLAGS=
-
-
-# PIO files description
 
 PIO0_SRC= $(SPECIFIC_PATH)/pio0.c
 PIO1_SRC= $(SPECIFIC_PATH)/pio1.c $(PIO0_SRC)
@@ -31,37 +31,59 @@ PIO4_SRC= $(SPECIFIC_PATH)/pio4.c $(PIO3_SRC)
 PIO5_SRC= $(SPECIFIC_PATH)/pio5.c $(PIO4_SRC)
 PIO6_SRC= $(SPECIFIC_PATH)/pio6.c $(PIO5_SRC)
 
-# FIXME: Need a better way to do this!
+# FIXME: Need a better way to do this! but Makefiles dont have OR
 ifeq ($(MCU),attiny25)
-PIO_SRC=$(PIO0_SRC)
+PIO_SRC= $(PIO0_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC=
+SPI_INC=
 else
 
 ifeq ($(MCU),atmega8)
-PIO_SRC=$(PIO2_SRC)
+PIO_SRC= $(PIO2_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC= $(SPECIFIC_PATH)/spim0.c
+SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
 else
 
 ifeq ($(MCU),atmega88)
-PIO_SRC=$(PIO2_SRC)
-else
-
-ifeq ($(MCU),atmega128)
-PIO_SRC=$(PIO6_SRC)
+PIO_SRC= $(PIO2_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC= $(SPECIFIC_PATH)/spim0.c
+SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
 else
 
 ifeq ($(MCU),atmega16)
-PIO_SRC=$(PIO3_SRC)
+PIO_SRC= $(PIO3_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC= $(SPECIFIC_PATH)/spim0.c
+SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
 else
-PIO_SRC=$(PIO0_SRC)
+
+ifeq ($(MCU),atmega32)
+PIO_SRC= $(PIO3_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC= $(SPECIFIC_PATH)/spim0.c
+SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+else
+
+ifeq ($(MCU),atmega128)
+PIO_SRC= $(PIO6_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+SPI_SRC= $(SPECIFIC_PATH)/spim0.c
+SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+else
+
+PIO_SRC= $(PIO0_SRC)
+PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
+endif
 endif
 endif
 endif
 endif
 endif
 
-
-SPI_SRC=	$(SPECIFIC_PATH)/spim_init.c	\
-		$(SPECIFIC_PATH)/spim_xmit.c
-
+# TODO: complete me ...
 USI_SRC=
 I2C_SRC=
 ADC_SRC=
@@ -73,12 +95,12 @@ CCP=
 ETH=
 DMA=
 
-SPI_INC=$(SPECIFIC_PATH)/spi_specific.h
-PIO_INC=$(SPECIFIC_PATH)/pio_specific.h
+ALL_SRC=$(PIO_SRC) $(SPI_SRC)
+ALL_INC=$(PIO_INC) $(SPI_INC)
 
-ALL_SRC=$(PIO_SRC)
-SPECIFIC_INC=$(PIO_INC)
-GENERIC_INC=$(GENERIC_PATH)/pio.h
+GENERIC_INC=	$(GENERIC_PATH)/pio.h	\
+		$(GENERIC_PATH)/types.h
+SPECIFIC_INC=$(PIO_INC) $(SPI_INC)
 
 ifeq ($(ARCH), atmega)
 ALL_SRC+=$(SPI_SRC)
@@ -88,13 +110,14 @@ LIB=libehal-$(MCU).a
 
 SRC=$(ALL_SRC)
 
-OBJ=$(SRC:.c=.o)
+OBJ=$(ALL_SRC:.c=.o)
 
 all: $(LIB)
 
 install:
-	$(MKDIR) -p $(INC_INSTALL_DIR)
+	$(MKDIR) -p $(INC_INSTALL_DIR)/$(ARCH)
 	$(CP) $(LIB) $(LIB_INSTALL_DIR)
+	$(CP) $(ALL_INC) $(INC_INSTALL_DIR)
 	$(CP) $(GENERIC_INC) $(INC_INSTALL_DIR)
 	$(CP) $(SPECIFIC_INC) $(INC_INSTALL_DIR)/$(ARCH)
 
@@ -110,4 +133,3 @@ $(LIB): $(OBJ) $(HEADERS)
 .PHONY:
 clean:
 	rm -f $(OBJ) $(LIB)
-

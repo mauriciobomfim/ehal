@@ -14,5 +14,7 @@ typedef signed long	s64;
 
 /* utilities */
 #define ARRAY_SIZE(x)	(sizeof(x) / sizeof(x[0]))
+#define GLUE2( x, y ) x ## y
+#define GLUE( x, y ) GLUE2( x, y )
 
 #endif

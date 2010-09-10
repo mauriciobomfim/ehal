@@ -7,14 +7,48 @@
 /* specify these functions on specific/arch/mcu/pio*.c
  * pio_port type/size must be specified on specific_pio.h */
 
-/* functions that pio.c have to implement */
-void pio_write		(pio_t p, pio_t val, pio_t mask);
-void pio_dir		(pio_t p, pio_t in, pio_t mask);
-void pio_pullup		(pio_t p, pio_t up, pio_t mask);
-pio_t pio_read		(pio_t p);
-u08  pio_validate	(pio_t p);
+/* functions that pio.c have to implement, one group for port. */
+void pio0_write		(pio_t val, pio_t mask);
+void pio0_dir		(pio_t in, pio_t mask);
+void pio0_pullup	(pio_t up, pio_t mask);
+pio_t pio0_read		(void);
+
+void pio1_write		(pio_t val, pio_t mask);
+void pio1_dir		(pio_t in, pio_t mask);
+void pio1_pullup	(pio_t up, pio_t mask);
+pio_t pio1_read		(void);
+
+void pio2_write		(pio_t val, pio_t mask);
+void pio2_dir		(pio_t in, pio_t mask);
+void pio2_pullup	(pio_t up, pio_t mask);
+pio_t pio2_read		(void);
+
+void pio3_write		(pio_t val, pio_t mask);
+void pio3_dir		(pio_t in, pio_t mask);
+void pio3_pullup	(pio_t up, pio_t mask);
+pio_t pio3_read		(void);
+
+void pio4_write		(pio_t val, pio_t mask);
+void pio4_dir		(pio_t in, pio_t mask);
+void pio4_pullup	(pio_t up, pio_t mask);
+pio_t pio4_read		(void);
+
+void pio5_write		(pio_t val, pio_t mask);
+void pio5_dir		(pio_t in, pio_t mask);
+void pio5_pullup	(pio_t up, pio_t mask);
+pio_t pio5_read		(void);
+
+void pio6_write		(pio_t val, pio_t mask);
+void pio6_dir		(pio_t in, pio_t mask);
+void pio6_pullup	(pio_t up, pio_t mask);
+pio_t pio6_read		(void);
 
 /* end of functions to implement */
+
+#define pio_write( x, y, z) GLUE(pio, GLUE(x, _write (y, z) ))
+#define pio_dir( x, y, z) GLUE(pio, GLUE(x, _dir (y, z) ))
+#define pio_pullup( x, y, z) GLUE(pio, GLUE(x, _pullup (y, z) ))
+#define pio_read(x) GLUE(pio, GLUE(x, _read() ))
 
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
 

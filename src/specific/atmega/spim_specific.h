@@ -8,4 +8,7 @@
 
 typedef u08 spim_t;
 
+void spim0_init (u08 freq, u08 cpol, u08 cpha);
+spim_t spim0_xmit (spim_t data);
+
 #endif
