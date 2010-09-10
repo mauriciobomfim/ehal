@@ -4,51 +4,17 @@
 #include "types.h"
 #include "pio_specific.h"
 
-/* specify these functions on specific/arch/mcu/pio*.c
- * pio_port type/size must be specified on specific_pio.h */
+/* Wrap of pio operations, where the first argument is the port number. */
+#define pio_write( x, y, z)	GLUE(pio, GLUE(x, _write (y, z) ))
+#define pio_dir( x, y, z)	GLUE(pio, GLUE(x, _dir (y, z) ))
+#define pio_pullup( x, y, z)	GLUE(pio, GLUE(x, _pullup (y, z) ))
+#define pio_read(x, y)		GLUE(pio, GLUE(x, _read(y) ))
 
-/* functions that pio.c have to implement, one group for port. */
-void pio0_write		(pio_t val, pio_t mask);
-void pio0_dir		(pio_t in, pio_t mask);
-void pio0_pullup	(pio_t up, pio_t mask);
-pio_t pio0_read		(void);
-
-void pio1_write		(pio_t val, pio_t mask);
-void pio1_dir		(pio_t in, pio_t mask);
-void pio1_pullup	(pio_t up, pio_t mask);
-pio_t pio1_read		(void);
-
-void pio2_write		(pio_t val, pio_t mask);
-void pio2_dir		(pio_t in, pio_t mask);
-void pio2_pullup	(pio_t up, pio_t mask);
-pio_t pio2_read		(void);
-
-void pio3_write		(pio_t val, pio_t mask);
-void pio3_dir		(pio_t in, pio_t mask);
-void pio3_pullup	(pio_t up, pio_t mask);
-pio_t pio3_read		(void);
-
-void pio4_write		(pio_t val, pio_t mask);
-void pio4_dir		(pio_t in, pio_t mask);
-void pio4_pullup	(pio_t up, pio_t mask);
-pio_t pio4_read		(void);
-
-void pio5_write		(pio_t val, pio_t mask);
-void pio5_dir		(pio_t in, pio_t mask);
-void pio5_pullup	(pio_t up, pio_t mask);
-pio_t pio5_read		(void);
-
-void pio6_write		(pio_t val, pio_t mask);
-void pio6_dir		(pio_t in, pio_t mask);
-void pio6_pullup	(pio_t up, pio_t mask);
-pio_t pio6_read		(void);
-
-/* end of functions to implement */
-
-#define pio_write( x, y, z) GLUE(pio, GLUE(x, _write (y, z) ))
-#define pio_dir( x, y, z) GLUE(pio, GLUE(x, _dir (y, z) ))
-#define pio_pullup( x, y, z) GLUE(pio, GLUE(x, _pullup (y, z) ))
-#define pio_read(x) GLUE(pio, GLUE(x, _read() ))
+/* Wrap for whole port operations */
+#define pio_write_port( x, y)	pio_write( x, y, (pio_t)-1)
+#define pio_dir_port( x, y)	pio_dir( x, y, (pio_t)-1)
+#define pio_pullup_port( x, y)	pio_pullup( x, y, (pio_t)-1)
+#define pio_read_port(x)	pio_read( x, (pio_t)-1)
 
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
 

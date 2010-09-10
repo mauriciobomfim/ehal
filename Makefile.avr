@@ -102,10 +102,6 @@ GENERIC_INC=	$(GENERIC_PATH)/pio.h	\
 		$(GENERIC_PATH)/types.h
 SPECIFIC_INC=$(PIO_INC) $(SPI_INC)
 
-ifeq ($(ARCH), atmega)
-ALL_SRC+=$(SPI_SRC)
-endif
-
 LIB=libehal-$(MCU).a
 
 SRC=$(ALL_SRC)
@@ -115,11 +111,11 @@ OBJ=$(ALL_SRC:.c=.o)
 all: $(LIB)
 
 install:
-	$(MKDIR) -p $(INC_INSTALL_DIR)/$(ARCH)
+	$(MKDIR) -p $(INC_INSTALL_DIR)
 	$(CP) $(LIB) $(LIB_INSTALL_DIR)
 	$(CP) $(ALL_INC) $(INC_INSTALL_DIR)
 	$(CP) $(GENERIC_INC) $(INC_INSTALL_DIR)
-	$(CP) $(SPECIFIC_INC) $(INC_INSTALL_DIR)/$(ARCH)
+	$(CP) $(SPECIFIC_INC) $(INC_INSTALL_DIR)
 
 $(LIB): $(OBJ) $(HEADERS)
 	$(AR) rcs $@ $(OBJ)

@@ -20,37 +20,37 @@ all-avr:
 	@echo building AVRs ...
 	# FIXME: Is the clearing realy needed? Find solution.
 # mega
-	make -f Makefile.avr ARCH=atmega MCU=atmega8 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega8		>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega88 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega88		>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega16 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega16		>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega32 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega32		>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega128 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega128		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega8 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega8		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega88 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega88		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega16 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega16		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega32 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega32		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega128 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega128		>> $(OUTPUT)
 # tiny
-	make -f Makefile.avr ARCH=attiny MCU=attiny25 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=attiny MCU=attiny25		>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=attiny25 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=attiny25		>> $(OUTPUT)
 
 all-avr-clean:
-	make -f Makefile.avr ARCH=atmega MCU=atmega8 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega88 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega16 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega32 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=atmega MCU=atmega128 clean	>> $(OUTPUT)
-	make -f Makefile.avr ARCH=attiny MCU=attiny25 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega8 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega88 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega16 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega32 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega128 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=attiny25 clean	>> $(OUTPUT)
 
 avr-install: avr
 	make -f Makefile.avr install ARCH=$(ARCH) MCU=$(MCU)
 
 all-avr-install: all-avr
-	make -f Makefile.avr install ARCH=atmega MCU=atmega8	>> $(OUTPUT)
-	make -f Makefile.avr install ARCH=atmega MCU=atmega88	>> $(OUTPUT)
-	make -f Makefile.avr install ARCH=atmega MCU=atmega16	>> $(OUTPUT)
-	make -f Makefile.avr install ARCH=atmega MCU=atmega32	>> $(OUTPUT)
-	make -f Makefile.avr install ARCH=atmega MCU=atmega128	>> $(OUTPUT)
-	make -f Makefile.avr install ARCH=attiny MCU=attiny25	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=atmega8	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=atmega88	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=atmega16	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=atmega32	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=atmega128	>> $(OUTPUT)
+	make -f Makefile.avr install ARCH=avr MCU=attiny25	>> $(OUTPUT)
 	
 
