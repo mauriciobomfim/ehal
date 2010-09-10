@@ -1,37 +1,102 @@
 CC=avr-gcc
 AR=avr-ar
+MKDIR=mkdir
+CP=cp
 
-#FIXME: set F_CPU somewhere else
-F_CPU=8000000
-CFLAGS=-Wall -ansi -Os
+LIB_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/lib/
+INC_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/include/ehal/
+GENERIC_PATH=src
+SPECIFIC_PATH=src/specific/$(ARCH)
+
+CFLAGS=-Wall -ansi -Os -funsigned-char -funsigned-bitfields -fpack-struct \
+	-fshort-enums -ffunction-sections -fno-inline-small-functions     \
+	-fno-split-wide-types -fno-tree-scev-cprop
 INCLUDE_DIR=					\
 		-I.				\
 		-I./src				\
 		-I./src/specific/		\
-		-I./src/specific/$(ARCH)/
-
+		-I./$(SPECIFIC_PATH)
 ALL_CFLAGS=-mmcu=$(MCU) -DF_CPU=$(F_CPU) $(CFLAGS) $(INCLUDE_DIR)
-LDFLAGS=
-GENERIC_SRC=					\
-	src/pio/pio_pin_high.c			\
-	src/pio/pio_pin_low.c
-SPECIFIC_SRC=					\
-	src/specific/$(ARCH)/pio_dir.c		\
-	src/specific/$(ARCH)/pio_pullup.c	\
-	src/specific/$(ARCH)/pio_read.c		\
-	src/specific/$(ARCH)/pio_validate.c	\
-	src/specific/$(ARCH)/pio_val.c
 
-HEADERS=					\
-	src/specific/$(ARCH)/pio_specific.h
+LDFLAGS=
+
+
+# PIO files description
+
+PIO0_SRC= $(SPECIFIC_PATH)/pio0.c
+PIO1_SRC= $(SPECIFIC_PATH)/pio1.c $(PIO0_SRC)
+PIO2_SRC= $(SPECIFIC_PATH)/pio2.c $(PIO1_SRC)
+PIO3_SRC= $(SPECIFIC_PATH)/pio3.c $(PIO2_SRC)
+PIO4_SRC= $(SPECIFIC_PATH)/pio4.c $(PIO3_SRC)
+PIO5_SRC= $(SPECIFIC_PATH)/pio5.c $(PIO4_SRC)
+PIO6_SRC= $(SPECIFIC_PATH)/pio6.c $(PIO5_SRC)
+
+# FIXME: Need a better way to do this!
+ifeq ($(MCU),attiny25)
+PIO_SRC=$(PIO0_SRC)
+else
+
+ifeq ($(MCU),atmega8)
+PIO_SRC=$(PIO2_SRC)
+else
+
+ifeq ($(MCU),atmega88)
+PIO_SRC=$(PIO2_SRC)
+else
+
+ifeq ($(MCU),atmega128)
+PIO_SRC=$(PIO6_SRC)
+else
+
+ifeq ($(MCU),atmega16)
+PIO_SRC=$(PIO3_SRC)
+else
+PIO_SRC=$(PIO0_SRC)
+endif
+endif
+endif
+endif
+endif
+
+
+SPI_SRC=	$(SPECIFIC_PATH)/spim_init.c	\
+		$(SPECIFIC_PATH)/spim_xmit.c
+
+USI_SRC=
+I2C_SRC=
+ADC_SRC=
+UART_SRC=
+PWM=
+RTC=
+INT=
+CCP=
+ETH=
+DMA=
+
+SPI_INC=$(SPECIFIC_PATH)/spi_specific.h
+PIO_INC=$(SPECIFIC_PATH)/pio_specific.h
+
+ALL_SRC=$(PIO_SRC)
+SPECIFIC_INC=$(PIO_INC)
+GENERIC_INC=$(GENERIC_PATH)/pio.h
+
+ifeq ($(ARCH), atmega)
+ALL_SRC+=$(SPI_SRC)
+endif
 
 LIB=libehal-$(MCU).a
 
-SRC=$(GENERIC_SRC) $(SPECIFIC_SRC)
+SRC=$(ALL_SRC)
 
 OBJ=$(SRC:.c=.o)
 
 all: $(LIB)
+
+install:
+	$(MKDIR) -p $(INC_INSTALL_DIR)
+	$(CP) $(LIB) $(LIB_INSTALL_DIR)
+	$(CP) $(GENERIC_INC) $(INC_INSTALL_DIR)
+	$(CP) $(SPECIFIC_INC) $(INC_INSTALL_DIR)/$(ARCH)
 
 $(LIB): $(OBJ) $(HEADERS)
 	$(AR) rcs $@ $(OBJ)
@@ -45,3 +110,4 @@ $(LIB): $(OBJ) $(HEADERS)
 .PHONY:
 clean:
 	rm -f $(OBJ) $(LIB)
+

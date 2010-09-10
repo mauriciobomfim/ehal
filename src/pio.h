@@ -8,15 +8,15 @@
  * pio_port type/size must be specified on specific_pio.h */
 
 /* functions that pio.c have to implement */
-void pio_val		(pio_port p, pio_port val, pio_port mask);
-void pio_dir		(pio_port p, pio_port in, pio_port mask);
-void pio_pullup		(pio_port p, pio_port up, pio_port mask);
-pio_port pio_read	(pio_port p, pio_port mask);
-u08  pio_validate	(pio_port p);
+void pio_write		(pio_t p, pio_t val, pio_t mask);
+void pio_dir		(pio_t p, pio_t in, pio_t mask);
+void pio_pullup		(pio_t p, pio_t up, pio_t mask);
+pio_t pio_read		(pio_t p);
+u08  pio_validate	(pio_t p);
 
 /* end of functions to implement */
 
-#define PIO_PIN_NAME(X) ((pio_port)1<<(X))
+#define PIO_PIN_NAME(X) ((pio_t)1<<(X))
 
 /* Pin symbolic names for easy usage. */
 enum pio_pin_names {

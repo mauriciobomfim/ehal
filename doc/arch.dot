@@ -11,22 +11,22 @@ digraph G {
 		pio [ label="{\
 pio\
 |\
-- write : pio_port\l\
-- direction : pio_port\l\
-- read : pio_port\l\
+- write : pio_data_t\l\
+- direction : pio_data_t\l\
+- read : pio_data_t\l\
 |\
-+ pio_val	(p : u08, val : pio_port, mask : pio_port) : void\l\
-+ pio_dir	(p : u08, val : pio_port, mask : pio_port) : void\l\
-+ pio_pullup	(p : u08, val : pio_port, mask : pio_port) : void\l\
-+ pio_read	(p : u08)\l\
++ pio_write	(p : u08, val : pio_data_t, mask : pio_data_t) : void\l\
++ pio_read	(p : u08) : pio_data_t\l\
++ pio_dir	(p : u08, dir : pio_data_t, mask : pio_data_t) : void\l\
++ pio_pullup	(p : u08, pull : pio_data_t, mask : pio_data_t) : void\l\
 }" ]
 		spim [ label="{\
 spim\
 |\
 |\
-+ void	spim_init (s : u08, freq : u08, cpol : u08, cpha : u08)\l\
-+ void	spim_buswidth(s : u08, buswidth : u08)\l\
-+ data	spim_transmit (s : u08, data)\l\
++ spim_init	(s : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
++ spim_buswidth	(s : u08, buswidth : u08) : void\l\
++ spim_xmit	(s : u08, data : spi_data_t) : spi_data_t\l\
 }" ]
 		uart [ label="{\
 uart\
@@ -80,8 +80,8 @@ dma\
 		hd44780 [ label="{\
 hd44780\
 |\
-- datap : pio_port\l\
-- cmdp : pio_port\l\
+- datap : pio_data_t\l\
+- cmdp : pio_data_t\l\
 - data_pin0 : u08\l\
 - en : u08\l\
 - rs : u08\l\
@@ -98,8 +98,8 @@ hd44780\
 		ks0108b [ label="{\
 ks0108b\
 |\
-- datap : pio_port\l\
-- cmdp : pio_port\l\
+- datap : pio_data_t\l\
+- cmdp : pio_data_t\l\
 - data_pin0 : u08\l\
 - en : u08\l\
 - rs : u08\l\
