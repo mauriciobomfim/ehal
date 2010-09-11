@@ -9,16 +9,16 @@ digraph G {
 	subgraph cluster_ehal {
 		label="ehal";
 		pio [ label="{\
-pioN\
+pio\
 |\
-- write : pio_data_t\l\
-- direction : pio_data_t\l\
-- read : pio_data_t\l\
+- write : pio_t\l\
+- direction : pio_t\l\
+- read : pio_t\l\
 |\
-+ pioN_write	(val : pio_data_t, mask : pio_data_t) : void\l\
-+ pioN_read	() : pio_data_t\l\
-+ pioN_dir	(dir : pio_data_t, mask : pio_data_t) : void\l\
-+ pioN_pullup	(pull : pio_data_t, mask : pio_data_t) : void\l\
++ pio_write	(port : u08, val : pio_t, mask : pio_t) : void\l\
++ pio_read	(port : u08, mask : pio_t) : pio_t\l\
++ pio_dir	(port : u08, dir : pio_t, mask : pio_t) : void\l\
++ pio_pullup	(port : u08, pull : pio_t, mask : pio_t) : void\l\
 }" ]
 		spim [ label="{\
 spim\
@@ -26,7 +26,7 @@ spim\
 |\
 + spim_init	(s : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
 + spim_buswidth	(s : u08, buswidth : u08) : void\l\
-+ spim_xmit	(s : u08, data : spi_data_t) : spi_data_t\l\
++ spim_xmit	(s : u08, data : spi_t) : spi_t\l\
 }" ]
 		uart [ label="{\
 uart\
@@ -80,8 +80,8 @@ dma\
 		hd44780 [ label="{\
 hd44780\
 |\
-- datap : pio_data_t\l\
-- cmdp : pio_data_t\l\
+- datap : pio_t\l\
+- cmdp : pio_t\l\
 - data_pin0 : u08\l\
 - en : u08\l\
 - rs : u08\l\
@@ -98,8 +98,8 @@ hd44780\
 		ks0108b [ label="{\
 ks0108b\
 |\
-- datap : pio_data_t\l\
-- cmdp : pio_data_t\l\
+- datap : pio_t\l\
+- cmdp : pio_t\l\
 - data_pin0 : u08\l\
 - en : u08\l\
 - rs : u08\l\

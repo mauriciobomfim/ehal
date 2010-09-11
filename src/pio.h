@@ -10,7 +10,7 @@
 #define pio_pullup( x, y, z)	GLUE(pio, GLUE(x, _pullup (y, z) ))
 #define pio_read(x, y)		GLUE(pio, GLUE(x, _read(y) ))
 
-/* Wrap for whole port operations */
+/* Wrap for whole port operations. */
 #define pio_write_port( x, y)	pio_write( x, y, (pio_t)-1)
 #define pio_dir_port( x, y)	pio_dir( x, y, (pio_t)-1)
 #define pio_pullup_port( x, y)	pio_pullup( x, y, (pio_t)-1)
