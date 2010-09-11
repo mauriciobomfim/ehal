@@ -5,10 +5,13 @@
 :Author Initials: MPC
 :Revision: 0.1
 
-This page contains the user API of ehal. For the source code go to:
+This page contains the user API of ehal. For the sources go to:
 link:http://github.com/mpolitzer/ehal[source]
 
 == Index ==
 
 - link:index.html[index]
-- link:manual/pio.html[pio]
+- link:pio.html[pio]
+
+== Architecture ==
+image:images/arch.png[height=32,link="images/arch.png"]

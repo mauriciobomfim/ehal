@@ -5,9 +5,11 @@
 :Author Initials: MPC
 :Revision: 0.1
 
+
 Introduction
 ------------
 This is the module for Port I/O abstraction.
+link:index.html[index]
 
 General Description
 -------------------
@@ -15,14 +17,23 @@ There are two interfaces to the ports, one with MASK for bit operations and
 one without, for whole port operations.
 
 [[FUNCTIONS]]
-.Functions
-|==========================================================================
+.Whole Port Functions
+|===========================================================================
+|Functions: P - port, V - value	| Bits of VALUE (1/0):	| Operation:
+|void pio_dir_port (P, V)	| input	/ output	| Set direction
+|void pio_write_port (P, V)	| high / low		| Set value
+|void pio_pullup_port (P, V)	| on / off		| Set pullup
+|pio_t pio_read_port (P)	| NONE			| Return readed port
+|===========================================================================
+
+.Partial Port Functions
+|===========================================================================
 |Functions: P - port, V - value, M - mask| Bits of VALUE (1/0):	| Operation:
 |void pio_dir (P, V, M)		| input	/ output	| Set direction
 |void pio_write (P, V, M)	| high / low		| Set value
 |void pio_pullup (P, V, M)	| on / off		| Set pullup
-|pio_t pio_read (P, M)		| NONE			| Read port
-|==========================================================================
+|pio_t pio_read (P, M)		| NONE			| Return readed port
+|===========================================================================
 
 .PARAMETERS
 
@@ -59,8 +70,8 @@ pio_write_port (DRIVER_PORT, 0xFF);
 pio_dir_port (DRIVER_PORT, 0xF0);
 
 /* This will result in undefined behaviour! We don't know what happens when
- * we write to input pins it is device dependent. So avoid partial port
- * operations with the _port group of functions.
+ * we write to input pins, it is device dependent. So to avoid nasty bugs,
+ * use the second method in such cases.
  */
 pio_write_port (DRIVER_PORT, 0xF0);
 ----
@@ -82,3 +93,8 @@ pio_dir (DRIVER_PORT, 0, SS );
  */
 pio_write (DRIVER_PORT, SS, SS);
 ----
+
+
+
+
+
