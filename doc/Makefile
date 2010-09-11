@@ -1,4 +1,5 @@
-# You must have a UNIX system to run this!
+# Generates Doc from asciidoc .txt files.
+
 DOT=dot
 DOCGEN=asciidoc
 RM=rm -f
@@ -11,15 +12,22 @@ EXTRA=	../LOG.html	\
 	../README.html	\
 	../LICENCE.html
 
+GRAPH= arch.svg
+
 HTML=$(MANUAL) $(EXTRA)
+
+%.svg:%.dot
+	$(DOT) -Tsvg $< -o $@
 
 %.html:%.txt
 	$(DOCGEN) $<
 
-.PHONY: html all clean
+.PHONY: html all clean graph
 html:$(HTML)
 
-all:$(HTML)
+graph:$(GRAPH)
+
+all:$(HTML) $(GRAPH)
 
 clean:
 	$(RM) $(HTML)
