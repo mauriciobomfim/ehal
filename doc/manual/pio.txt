@@ -1,0 +1,84 @@
+= PIO =
+:Author: Marcelo Politzer Couto
+:Email: <mpolitzer.c@gmail.com>
+:Date: Sat Sep 11 13:59:14 UTC 2010
+:Author Initials: MPC
+:Revision: 0.1
+
+Introduction
+------------
+This is the module for Port I/O abstraction.
+
+General Description
+-------------------
+There are two interfaces to the ports, one with MASK for bit operations and
+one without, for whole port operations.
+
+[[FUNCTIONS]]
+.Functions
+|==========================================================================
+|Functions: P - port, V - value, M - mask| Bits of VALUE (1/0):	| Operation:
+|void pio_dir (P, V, M)		| input	/ output	| Set direction
+|void pio_write (P, V, M)	| high / low		| Set value
+|void pio_pullup (P, V, M)	| on / off		| Set pullup
+|pio_t pio_read (P, M)		| NONE			| Read port
+|==========================================================================
+
+.PARAMETERS
+
+- *PORT* - Indicates which port of the device we're using. This value is
+  within 0 <= PORT < PIO_NUM_PORTS, PIO_NUM_PORTS is defined in the
+  pio_specific.h for a given MCU. For example, on atmega8 there are 3 ports,
+  PORTB, PORTC and PORTD. In this case we'll have 0 <= PORT < 3, where 0 is
+  PORTB, 1 is PORTC and 2 is PORTD.
+
+- *VALUE* - Depends on the operation. Check <<FUNCTIONS,FUNCTIONS>> table.
+
+- *MASK* - Is which bits of VALUE we want to change in the port. When the bit
+  of MASK is 1, the corresponding bit of VALUE will be computed by the
+  function. If it is 0, the bit in VALUE will be ignored.
+
+Example
+-------
+
+Lets consider we're using an 8bits MCU. The first interface is:
+
+----
+/* pio_*_port Example: */
+
+/* Constant to reference a port */
+#define DRIVER_PORT	0
+
+/* make port0 output. */
+pio_dir_port (DRIVER_PORT, 0x00);
+
+/* make port0 high */
+pio_write_port (DRIVER_PORT, 0xFF);
+
+/* make bits 7,6,5,4 input and 3,2,1,0 output */
+pio_dir_port (DRIVER_PORT, 0xF0);
+
+/* This will result in undefined behaviour! We don't know what happens when
+ * we write to input pins it is device dependent. So avoid partial port
+ * operations with the _port group of functions.
+ */
+pio_write_port (DRIVER_PORT, 0xF0);
+----
+
+For the second, with mask:
+
+----
+/* pio_* Example: */
+
+/* Constant to reference a port and pin. */
+#define DRIVER_PORT	0
+#define SS 0
+
+/* make pin0 of port0 output, the rest is not changed. */
+pio_dir (DRIVER_PORT, 0, SS );
+
+/* make pin0 of port0 high, again without changing the rest of the port.
+ * This is the wright way to write to partial bits of a port
+ */
+pio_write (DRIVER_PORT, SS, SS);
+----
