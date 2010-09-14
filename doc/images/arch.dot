@@ -19,19 +19,14 @@ pio\
 + pio_read		(port : u08, mask : pio_t) : pio_t\l\
 + pio_dir		(port : u08, dir : pio_t, mask : pio_t) : void\l\
 + pio_pullup		(port : u08, pull : pio_t, mask : pio_t) : void\l\
-\l\
-+ pio_write_port	(port : u08, val : pio_t) : void\l\
-+ pio_read_port		(port : u08) : pio_t\l\
-+ pio_dir_port		(port : u08, dir : pio_t) : void\l\
-+ pio_pullup_port	(port : u08, pull : pio_t) : void\l\
 }" ]
 		spim [ label="{\
 spim\
 |\
 |\
-+ spim_init	(s : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
-+ spim_buswidth	(s : u08, buswidth : u08) : void\l\
-+ spim_xmit	(s : u08, data : spi_t) : spi_t\l\
++ spim_init	(spi : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
++ spim_buswidth	(spi : u08, buswidth : u08) : void\l\
++ spim_xmit	(spi : u08, data : spi_t) : spi_t\l\
 }" ]
 		uart [ label="{\
 uart\

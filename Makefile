@@ -4,23 +4,25 @@ CP=cp
 AVR_INCLUDE_INSTALL=$(which avr-gcc)
 AVR_INSTALL_LIB_DIR=$(shell dirname $(shell which avr-gcc))/../avr/lib/
 
-all: all-avr
+.PHONY: all doc clean avr all-avr all-avr-clean
+
+all: avr
 	@echo
 	@echo done!
 
-clean: all-avr-clean
+doc:
+	make -C doc -f Makefile all
 
-install: all-avr-install
+clean: avr-clean
+
+install: avr-install
 
 avr:
-	make -f Makefile.avr MCU=$(MCU) ARCH=$(ARCH)
-
-all-avr:
 	@echo
 	@echo building AVRs ...
 	# FIXME: Is the clearing realy needed? Find solution.
 # mega
-	make -f Makefile.avr ARCH=avr MCU=atmega8 clean	>> $(OUTPUT)
+	make -f Makefile.avr ARCH=avr MCU=atmega8 clean		>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega8		>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega88 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega88		>> $(OUTPUT)
@@ -34,23 +36,18 @@ all-avr:
 	make -f Makefile.avr ARCH=avr MCU=attiny25 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=attiny25		>> $(OUTPUT)
 
-all-avr-clean:
-	make -f Makefile.avr ARCH=avr MCU=atmega8 clean	>> $(OUTPUT)
+avr-clean:
+	make -f Makefile.avr ARCH=avr MCU=atmega8 clean		>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega88 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega16 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega32 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=atmega128 clean	>> $(OUTPUT)
 	make -f Makefile.avr ARCH=avr MCU=attiny25 clean	>> $(OUTPUT)
 
-avr-install: avr
-	make -f Makefile.avr install ARCH=$(ARCH) MCU=$(MCU)
-
-all-avr-install: all-avr
+avr-install: all-avr
 	make -f Makefile.avr install ARCH=avr MCU=atmega8	>> $(OUTPUT)
 	make -f Makefile.avr install ARCH=avr MCU=atmega88	>> $(OUTPUT)
 	make -f Makefile.avr install ARCH=avr MCU=atmega16	>> $(OUTPUT)
 	make -f Makefile.avr install ARCH=avr MCU=atmega32	>> $(OUTPUT)
 	make -f Makefile.avr install ARCH=avr MCU=atmega128	>> $(OUTPUT)
 	make -f Makefile.avr install ARCH=avr MCU=attiny25	>> $(OUTPUT)
-	
-

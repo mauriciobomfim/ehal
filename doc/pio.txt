@@ -5,28 +5,15 @@
 :Author Initials: MPC
 :Revision: 0.1
 
+link:index.html[index]
 
 Introduction
 ------------
-This is the module for Port I/O abstraction.
-link:index.html[index]
-
-General Description
--------------------
-There are two interfaces to the ports, one with MASK for bit operations and
-one without, for whole port operations.
+This is the module for Port Input/Output.
 
 [[FUNCTIONS]]
-.Whole Port Functions
-|===========================================================================
-|Functions: P - port, V - value	| Bits of VALUE (1/0):	| Operation:
-|void pio_dir_port (P, V)	| input	/ output	| Set direction
-|void pio_write_port (P, V)	| high / low		| Set value
-|void pio_pullup_port (P, V)	| on / off		| Set pullup
-|pio_t pio_read_port (P)	| NONE			| Return readed port
-|===========================================================================
 
-.Partial Port Functions
+.Functions
 |===========================================================================
 |Functions: P - port, V - value, M - mask| Bits of VALUE (1/0):	| Operation:
 |void pio_dir (P, V, M)		| input	/ output	| Set direction
@@ -41,60 +28,54 @@ one without, for whole port operations.
   within 0 <= PORT < PIO_NUM_PORTS, PIO_NUM_PORTS is defined in the
   pio_specific.h for a given MCU. For example, on atmega8 there are 3 ports,
   PORTB, PORTC and PORTD. In this case we'll have 0 <= PORT < 3, where 0 is
-  PORTB, 1 is PORTC and 2 is PORTD.
+  PORTB, 1 is PORTC and 2 is PORTD. If a non-existent port is used, this
+  will generate a compilation time error, more precisely a linkage error.
 
 - *VALUE* - Depends on the operation. Check <<FUNCTIONS,FUNCTIONS>> table.
+  This parameter doesn't apply for read function.
 
-- *MASK* - Is which bits of VALUE we want to change in the port. When the bit
-  of MASK is 1, the corresponding bit of VALUE will be computed by the
-  function. If it is 0, the bit in VALUE will be ignored.
+- *MASK* - Is which bits of VALUE we want to change in the port. if the bit
+is on, 
 
 Example
 -------
 
-Lets consider we're using an 8bits MCU. The first interface is:
+Lets consider we're using an 8bits MCU.
 
 ----
-/* pio_*_port Example: */
-
-/* Constant to reference a port */
-#define DRIVER_PORT	0
-
-/* make port0 output. */
-pio_dir_port (DRIVER_PORT, 0x00);
-
-/* make port0 high */
-pio_write_port (DRIVER_PORT, 0xFF);
-
-/* make bits 7,6,5,4 input and 3,2,1,0 output */
-pio_dir_port (DRIVER_PORT, 0xF0);
-
-/* This will result in undefined behaviour! We don't know what happens when
- * we write to input pins, it is device dependent. So to avoid nasty bugs,
- * use the second method in such cases.
- */
-pio_write_port (DRIVER_PORT, 0xF0);
-----
-
-For the second, with mask:
-
-----
-/* pio_* Example: */
+/* Write Example: */
 
 /* Constant to reference a port and pin. */
 #define DRIVER_PORT	0
-#define SS 0
+#define SS P0
 
-/* make pin0 of port0 output, the rest is not changed. */
+/* make pin0 of port0 output. The rest is not changed. */
 pio_dir (DRIVER_PORT, 0, SS );
 
-/* make pin0 of port0 high, again without changing the rest of the port.
- * This is the wright way to write to partial bits of a port
- */
+/* make pin0 of port0 high, again without changing the rest of the port. */
 pio_write (DRIVER_PORT, SS, SS);
 ----
 
+----
+/* Read Example: */
+#define DRIVER_PORT	0
+#define SS P7
 
+#define PARTIA_PORT	1
+/* 4bits interface */
+#define PPBITS	(P0|P1|P2|P3)
 
+pio_t v, pp;
+/* Make whole port in. */
+pio_dir (DRIVER_PORT, PIO_ALL, PIO_ALL);
 
+/* Read all bits. */
+v = pio_read (DRIVER_PORT, PIO_ALL);
+
+/* set PARTIAL_PORT */
+pio_dir (PARTIAL_PORT, PPBITS, PPBITS);
+
+/* Read PARTIAL_PORT, pp only gets the bits from PPBITS. */
+pp = pio_read (PARTIAL_PORT, PPBITS);
+----
 

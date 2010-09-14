@@ -1,20 +1,13 @@
 #ifndef __GENERIC_PIO_H
 #define __GENERIC_PIO_H
 
-#include "types.h"
 #include "pio_specific.h"
 
 /* Wrap of pio operations, where the first argument is the port number. */
-#define pio_write( x, y, z)	GLUE(pio, GLUE(x, _write (y, z) ))
-#define pio_dir( x, y, z)	GLUE(pio, GLUE(x, _dir (y, z) ))
-#define pio_pullup( x, y, z)	GLUE(pio, GLUE(x, _pullup (y, z) ))
-#define pio_read(x, y)		GLUE(pio, GLUE(x, _read(y) ))
-
-/* Wrap for whole port operations. */
-#define pio_write_port( x, y)	pio_write( x, y, (pio_t)-1)
-#define pio_dir_port( x, y)	pio_dir( x, y, (pio_t)-1)
-#define pio_pullup_port( x, y)	pio_pullup( x, y, (pio_t)-1)
-#define pio_read_port(x)	pio_read( x, (pio_t)-1)
+#define pio_write( p, v, m)	GLUE(pio, GLUE(p, _write (v, m) ))
+#define pio_dir( p, v, m)	GLUE(pio, GLUE(p, _dir (v, m) ))
+#define pio_pullup( p, v, m)	GLUE(pio, GLUE(p, _pullup (v, m) ))
+#define pio_read(p, v)		GLUE(pio, GLUE(p, _read(m) ))
 
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
 

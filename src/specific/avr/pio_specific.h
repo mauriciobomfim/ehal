@@ -13,12 +13,15 @@ typedef struct pio_pin_t {
 
 typedef u08 pio_t;
 
-#if	defined(_AVR_IOTN25_H_)
+#if	defined(_AVR_IOTN25_H_) ||\
+	defined(_AVR_IOTN45_H_) ||\
+	defined(_AVR_IOTN85_H_)
 #define PIO_WRITE0	PORTB
 #define PIO_READ0	PINB
 #define PIO_DIR0	DDRB
 #define PIO_PULLUP0	PORTB
 #define PIO_NUM_PORTS	1
+
 
 #elif	defined(_AVR_IOM8_H_)	||\
 	defined(_AVR_IOM48_H_)	||\
@@ -42,6 +45,7 @@ typedef u08 pio_t;
 #define PIO_PULLUP2	PORTD
 #define PIO_NUM_PORTS	3
 #else
+
 
 #define PIO_WRITE0	PORTA
 #define PIO_WRITE1	PORTB
