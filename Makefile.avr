@@ -1,8 +1,12 @@
+# Must have utils
 CC=avr-gcc
 AR=avr-ar
 MKDIR=mkdir
 CP=cp
 RM=rm
+
+# Final name
+LIB=libehal-$(MCU).a
 
 #TODO: trocar orientacao do build arquivo para recurso.
 # if( $(MCU), atmega8 )
@@ -30,8 +34,11 @@ ALL_CFLAGS=-mmcu=$(MCU) $(CFLAGS) $(INCLUDE_DIR)
 
 LDFLAGS=
 
-# Resources definition.
-PIO0= $(SPECIFIC_PATH)/pio0.c $(SPECIFIC_PATH)/pio_specific.h
+# Resources definition. No need to change, change the ifeq of specific MCUs.
+# Also... pio0 brings together the API.
+PIO0= $(SPECIFIC_PATH)/pio0.c	\
+	$(SPECIFIC_PATH)/pio_specific.h	\
+	$(GENERIC_PATH)/pio.h
 PIO1= $(SPECIFIC_PATH)/pio1.c $(PIO0)
 PIO2= $(SPECIFIC_PATH)/pio2.c $(PIO1)
 PIO3= $(SPECIFIC_PATH)/pio3.c $(PIO2)
@@ -39,53 +46,40 @@ PIO4= $(SPECIFIC_PATH)/pio4.c $(PIO3)
 PIO5= $(SPECIFIC_PATH)/pio5.c $(PIO4)
 PIO6= $(SPECIFIC_PATH)/pio6.c $(PIO5)
 
-SPIM0= $(SPECIFIC_PATH)/spim0.c
+SPIM0= $(SPECIFIC_PATH)/spim0.c $(SPECIFIC_PATH)/spim_specific.h
 
+# checking MCU resources
 
 ifeq ($(MCU),attiny25)
 PIO= $(PIO0)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC=
-SPI_INC=
 else
 
 ifeq ($(MCU),atmega8)
 PIO= $(PIO2)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC= $(SPECIFIC_PATH)/spim0.c
-SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega88)
 PIO= $(PIO2)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC= $(SPECIFIC_PATH)/spim0.c
-SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega16)
 PIO= $(PIO3)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC= $(SPECIFIC_PATH)/spim0.c
-SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega32)
 PIO= $(PIO3)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC= $(SPECIFIC_PATH)/spim0.c
-SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
+SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega128)
 PIO= $(PIO6)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
-SPI_SRC= $(SPECIFIC_PATH)/spim0.c
-SPI_INC= $(SPECIFIC_PATH)/spim_specific.h
-else
+SPI= $(SPIM0)
+else # Don't have port for this one... but trying out any way.
 
 PIO= $(PIO0)
-PIO_INC= $(SPECIFIC_PATH)/pio_specific.h
 endif
 endif
 endif
@@ -105,15 +99,14 @@ CCP=
 ETH=
 DMA=
 
-SRC=$(PIO) $(SPI_SRC)
-INC=$(PIO_INC) $(SPI_INC)
-
-GENERIC_INC=	$(GENERIC_PATH)/pio.h	\
+# .c + .h
+RESOURCES=	$(PIO)		\
+		$(SPI_SRC)	\
 		$(GENERIC_PATH)/types.h
-SPECIFIC_INC=$(PIO_INC) $(SPI_INC)
-
-LIB=libehal-$(MCU).a
-
+# .h only
+INC=$(filter %.h, $(RESOURCES))
+# .c only
+SRC=$(filter %.c, $(RESOURCES))
 OBJ=$(SRC:.c=.o)
 
 all: $(LIB)
@@ -121,12 +114,10 @@ all: $(LIB)
 install: all
 	$(MKDIR) -p $(INC_INSTALL_DIR)
 	$(CP) $(LIB) $(LIB_INSTALL_DIR)
-	$(CP) $(ALL_INC) $(INC_INSTALL_DIR)
-	$(CP) $(GENERIC_INC) $(INC_INSTALL_DIR)
-	$(CP) $(SPECIFIC_INC) $(INC_INSTALL_DIR)
+	$(CP) $(INC) $(INC_INSTALL_DIR)
 
-$(LIB): $(OBJ) $(HEADERS)
-	$(AR) rcs $@ $(OBJ)
+$(LIB): $(OBJ)
+	$(AR) rcs $@ $^
 
 %.elf: $(OBJ)
 	$(CC) $(ALL_CFLAGS) $^ $@ $(LDFLAGS)
@@ -136,4 +127,4 @@ $(LIB): $(OBJ) $(HEADERS)
 
 .PHONY:
 clean:
-	$(RM) -f $(SPECIFIC_DIR)/*.o $(LIB)
+	$(RM) -f $(OBJ) $(LIB)
