@@ -1,15 +1,34 @@
+/** @file
+ * @defgroup PIO
+ * @{
+ * @brief PIO API
+ */
 #ifndef __GENERIC_PIO_H
 #define __GENERIC_PIO_H
 
+#include "types.h"
 #include "pio_specific.h"
 
-/* Wrap of pio operations, where the first argument is the port number. */
+/* Wrap of pio operations, where the first argument is the port number.
+ * This don't need any change for adding a new port, change pio_specif.h
+ * for this. Also, GLUE is defined at types.h */
+/**@{
+ * @param p is the port
+ * @param v is the value (high/low; in/out; on/off)
+ * @param m is the mask, that says which bits from the port will be changed.
+ */
+
 #define pio_write( p, v, m)	GLUE(pio, GLUE(p, _write (v, m) ))
 #define pio_dir( p, v, m)	GLUE(pio, GLUE(p, _dir (v, m) ))
 #define pio_pullup( p, v, m)	GLUE(pio, GLUE(p, _pullup (v, m) ))
 #define pio_read(p, v)		GLUE(pio, GLUE(p, _read(m) ))
+/**@}*/
+
+/** @brief Runtime check of @a port existence */
+u08 pio_exists (u08 port);
 
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
+#define PIO_ALL		((pio_t)-1)
 
 /* Pin symbolic names for easy usage. */
 enum pio_pin_names {
@@ -53,3 +72,5 @@ enum pio_pin_names {
 #undef PIO_PIN_NAME
 
 #endif
+
+/**@} */ /* end of PIO group */

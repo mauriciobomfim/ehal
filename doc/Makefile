@@ -1,19 +1,12 @@
 # Generates Doc from asciidoc .txt files.
 
 DOT=dot
-DOCGEN=asciidoc
+DOCGEN=doxygen
 RM=rm -f
 
 IMAGES=images
 # Targets, files to build.
-MANUAL=	index.html	\
-	pio.html
 
-EXTRA=	../LOG.html		\
-	../README.html		\
-	../LICENCE.html
-
-HTML=$(MANUAL) $(EXTRA)
 GRAPH=$(IMAGES)/arch.png
 
 %.svg:%.dot
@@ -22,13 +15,11 @@ GRAPH=$(IMAGES)/arch.png
 %.png:%.dot
 	$(DOT) -Tpng $< -o $@
 
-%.html:%.txt
-	$(DOCGEN) $<
+.PHONY: all clean graph html
+all:$(GRAPH)
 
-.PHONY: html all clean graph
-all:$(HTML) $(GRAPH)
-
-html:$(HTML)
+html:
+	$(DOXYGEN)
 
 graph:$(GRAPH)
 

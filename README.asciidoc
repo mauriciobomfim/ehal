@@ -11,30 +11,29 @@ Ehal stands for Embedded Hardware Abstraction Layer, the goal of the project
 is to create a simple to use hardware interfaces to the various
 architectures and MCUs available in the market.
 
-That will make possible create a driver only once and reuse it in any of the
-supported hardware by the ehal. This second step is planed to be called
-genlib - Generic Lib.
+With that, it will be possible create a driver only once and reuse it in any
+of the supported hardware by the ehal. This is second step and is getting
+planed. The GeLip - Generic Library Project.
 
-But for that...
+But before that we need to...
 
 == Roadmap ==
 
 - Finish ARCH and MCU independent building process.
 - Create the abstract interfaces for MCU peripherals.
-- Installation to make the various tool chains find the libs and headers.
+- Installation to make the various toolchains find the libs and headers.
 - Find people to help with the project.
-- Create drivers with the unified API for common HW like: displays, RTCs,
-  etc.
-- God knows....
+...
 
 == Planned Architectures and MCUs ==
 
 |===========================================================================
-|avr:		|attinys 25, 45, 85, atmegas: 8, 16, 32, 88, 48, 168, 128
-|msp430:	|?
-|hcs08		|?
-|8051		|?
-|arm7:		|lpc2101 to lpc2106, str711fr2, ...
-|arm9:		|?
-|arm-cortex-m3:	|?
+|avr:		|	attinys 25, 45, 85, 2313.
+			atmegas: 8, 16, 32, 88, 48, 168, 128
+|msp430:	|	?
+|hcs08		|	?
+|8051		|	?
+|arm7:		|	lpc2101 to lpc2106, str711fr2, ...
+|arm9:		|	?
+|arm-cortex-m3:	|	?
 |===========================================================================

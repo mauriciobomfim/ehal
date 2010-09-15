@@ -35,8 +35,10 @@ ALL_CFLAGS=-mmcu=$(MCU) $(CFLAGS) $(INCLUDE_DIR)
 LDFLAGS=
 
 # Resources definition. No need to change, change the ifeq of specific MCUs.
-# Also... pio0 brings together the API.
-PIO0= $(SPECIFIC_PATH)/pio0.c	\
+# Also... pio0 brings together the API sinse it gets included for any pio
+# usage.
+PIO0= $(SPECIFIC_PATH)/pio0.c		\
+	$(SPECIFIC_PATH)/pio_exists.c	\
 	$(SPECIFIC_PATH)/pio_specific.h	\
 	$(GENERIC_PATH)/pio.h
 PIO1= $(SPECIFIC_PATH)/pio1.c $(PIO0)

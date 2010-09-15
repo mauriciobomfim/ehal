@@ -81,7 +81,9 @@ typedef u08 pio_t;
 #define PIO_NUM_PORTS	7
 #endif
 
-/* functions that pio.c have to implement, one group for port. */
+/* functions that pioN.c have to implement, one group for port.
+ * This is done to get a smaller copupling. You only link the pio
+ * you are using. */
 void pio0_write		(pio_t val, pio_t mask);
 void pio0_dir		(pio_t in, pio_t mask);
 void pio0_pullup	(pio_t up, pio_t mask);
@@ -116,9 +118,5 @@ void pio6_write		(pio_t val, pio_t mask);
 void pio6_dir		(pio_t in, pio_t mask);
 void pio6_pullup	(pio_t up, pio_t mask);
 pio_t pio6_read		(pio_t mask);
-
-/* end of functions to implement */
-
-
 
 #endif
