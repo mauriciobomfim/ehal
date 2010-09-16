@@ -15,15 +15,14 @@ pio\
 - direction : pio_t\l\
 - read : pio_t\l\
 |\
-+ pio_write		(port : u08, val : pio_t, mask : pio_t) : void\l\
-+ pio_read		(port : u08, mask : pio_t) : pio_t\l\
-+ pio_dir		(port : u08, dir : pio_t, mask : pio_t) : void\l\
-+ pio_pullup		(port : u08, pull : pio_t, mask : pio_t) : void\l\
++ pio_write		(port : u08, val : pio_t, mask : pio_t)	: void\l\
++ pio_read		(port : u08, mask : pio_t)		: pio_t\l\
++ pio_dir		(port : u08, dir : pio_t, mask : pio_t)	: void\l\
++ pio_pullup		(port : u08, pull : pio_t, mask : pio_t): void\l\
 }" ]
 		spim [ label="{\
 spim\
-|\
-|\
+||\
 + spim_init	(spi : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
 + spim_buswidth	(spi : u08, buswidth : u08) : void\l\
 + spim_xmit	(spi : u08, data : spi_t) : spi_t\l\
@@ -52,6 +51,17 @@ adc\
 pwm\
 ||\
 }" ]
+		eeprom [ label="{\
+eeprom\
+||\
+eep_write_byte	(prt : eep_t, data : u08)	: u08\l\
+eep_write_word	(prt : eep_t, data : u16)	: u08\l\
+eep_write_dword	(prt : eep_t, data : u32)	: u08\l\
+\
+eep_read_byte	(prt : eep_t, *data : u08)	: u08 \l\
+eep_read_word	(prt : eep_t, *data : u16)	: u08 \l\
+eep_read_dword	(prt : eep_t, *data : u32)	: u08 \l\
+}" ]
 		rtc [ label="{\
 rtc\
 ||\
@@ -74,44 +84,42 @@ dma\
 }" ]
 	}
 /*------------------------------------------------------------------------*/
-	subgraph cluster_genlib {
-		label="genlib";
+	subgraph cluster_gelila {
+		label="Gelila";
 
 		hd44780 [ label="{\
 hd44780\
 |\
-- datap : pio_t\l\
-- cmdp : pio_t\l\
-- data_pin0 : u08\l\
-- en : u08\l\
-- rs : u08\l\
-- rw : u08\l\
-- x : u08\l\
-- y : u08\l\
++ data_port	: u08\l\
++ data_pin0	: pio_t\l\
++ en		: pio_pin_t\l\
++ rs		: pio_pin_t\l\
++ rw		: pio_pin_t\l\
+- x		: u08\l\
+- y		: u08\l\
 |\
-+ hd44780_init (d : hd44780_t) : void\l\
-+ hd44780_putc (d : hd44780_t, c : char) : void\l\
-+ hd44780_puts (d : hd44780_t, *s: const char) : void\l\
-+ hd44780_goto (d : hd44780_t, x, y) : void\l\
-+ hd44780_getc (d : hd44780_t) : char\l\
++ hd44780_init	(disp : hd44780_t)			: void\l\
++ hd44780_putc	(disp : hd44780_t, c : char)		: void\l\
++ hd44780_getc	(disp : hd44780_t)			: char\l\
++ hd44780_puts	(disp : hd44780_t, *s: const char)	: void\l\
++ hd44780_goto	(disp : hd44780_t, x, y)		: void\l\
 }" ]
 		ks0108b [ label="{\
 ks0108b\
 |\
-- datap : pio_t\l\
-- cmdp : pio_t\l\
-- data_pin0 : u08\l\
-- en : u08\l\
-- rs : u08\l\
-- rw : u08\l\
-- cs : u08\l\
-- x : u08\l\
-- y : u08\l\
++ data_port	: pio_t\l\
++ data_pin0	: pio_t\l\
++ en		: pio_pin_t\l\
++ rs		: pio_pin_t\l\
++ rw		: pio_pin_t\l\
++ cs		: pio_pin_t\l\
+- x		: u08\l\
+- y		: u08\l\
 |\
-+ ks0108b_init (d : ks0108b_t) : void\l\
-+ ks0108b_putc (d : ks0108b_t, c : char) : void\l\
-+ ks0108b_puts (d : ks0108b_t, *s : const char) : void\l\
-+ ks0108b_goto (d : ks0108b_t, x : u08, y : 08) : void\l\
++ ks0108b_init (disp : ks0108b_t) : void\l\
++ ks0108b_putc (disp : ks0108b_t, c : char) : void\l\
++ ks0108b_puts (disp : ks0108b_t, *s : const char) : void\l\
++ ks0108b_goto (disp : ks0108b_t, x : u08, y : 08) : void\l\
 }" ]
 		hd44780 -> pio;
 		ks0108b -> pio;
