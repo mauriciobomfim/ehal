@@ -1,6 +1,6 @@
 /** @file
  * @brief PIO_API
- * @defgroup PIO
+ * @defgroup pio PIO
  * @{
  */
 #ifndef __GENERIC_PIO_H
@@ -12,44 +12,65 @@
 /* Wrap of pio operations, where the first argument is the port number.
  * This don't need any change for adding a new port, change pio_specif.h
  * for this. Also, GLUE is defined at types.h */
-/** @fn
- * @brief Write value to port @a p. If it is an output. @see pio_dir
- * @param p is the port identifier
- * @param value is the value (high/low; in/out; on/off)
- * @param mask is the mask, that says which bits from the port will
- * be changed. @see pio0_write for an example. */
 
+/** @brief Set output port high(1) or low(0). Undefined behaviour for port
+ * configured as input.
+ * @param p - is the port identifier
+ * @param value - When port is output, set it to high(1) or low(0).
+ * @param mask - is the mask, that says which bits from the port will */
 #define pio_write( p, value, mask)	\
 	GLUE(pio, GLUE(p, _write (value, mask) ))
 
+/** @brief Change port direction.
+ * @param p - is the port identifier
+ * @param direction - When port is output, set it to high(1) or low(0).
+ * @param mask - is the mask, that says which bits from the port will */
 #define pio_dir( p, direction, mask)	\
 	GLUE(pio, GLUE(p, _dir (direction, mask) ))
 
+/** @brief Function for PIO operation.
+ * @param p - is the port identifier
+ * @param pullup - When port is output, set it to high(1) or low(0).
+ * @param mask - is the mask, that says which bits from the port will */
 #define pio_pullup( p, pullup, mask)	\
 	GLUE(pio, GLUE(p, _pullup (pullup, mask) ))
 
+/** @brief Function for PIO operation.
+ * @param p - is the port identifier
+ * @param mask - is the mask, that says which bits from the port will
+ * @return pio_t - the masked pins of port. */
 #define pio_read(p, mask)		\
 	GLUE(pio, GLUE(p, _read(mask) ))
 
-/**@defgroup PIO
- * @{
-
- * @defgroup PIO_runtime
+/** @ingroup pio
+ * @defgroup PIO_runtime pio_runtime
+ * @brief This documentation contains the Runtime functions.
  * @{*/
 u08 pio_rt_write	(u08 p, pio_t value, pio_t mask);
 u08 pio_rt_dir		(u08 p, pio_t value, pio_t mask);
 u08 pio_rt_pullup	(u08 p, pio_t value, pio_t mask);
 u08 pio_rt_read		(u08 p, pio_t mask, pio_t *value);
+
 /** @brief Runtime check of port existence.
   @param port - port number.
   @return 0 if doesn't exist.\n */
 u08 pio_rt_exists (u08 port);
 /** @} */
 
+/** @brief helper for generating the pio_pin enum. @see pio_pin_names */
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
+
+/** Macro to refer to all pins of a given PORT, pio_write( 0, 0, PIO_ALL )*/
 #define PIO_ALL		((pio_t)-1)
 
+#ifndef PIO_SIZE
+#define PIO_SIZE 32
+#warning PIO_SIZE undefined, possible bug in port
+#endif
+
 /* Pin symbolic names for easy usage. */
+/** @brief Each P is the 1<<N where N is its number. This avoid (1<<N) for
+ * the user.*/
 enum pio_pin_names {
 	P0  = PIO_PIN_NAME( 0),
 	P1  = PIO_PIN_NAME( 1),

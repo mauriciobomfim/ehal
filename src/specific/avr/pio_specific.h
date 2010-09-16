@@ -1,10 +1,9 @@
 /** @file
- * @defgroup PIO
+ * @defgroup pio pio
  * @{
-
- * @defgroup PIO_AVR
+ * @defgroup pio_avr PIO_avr
  * @{
- * @brief 
+ * @brief This file contains the implementation details of the AVR port.
  */
 #ifndef __PIO_SPECIFIC_H
 #define __PIO_SPECIFIC_H
