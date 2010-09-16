@@ -4,10 +4,10 @@ DOT=dot
 DOCGEN=doxygen
 RM=rm -f
 
-IMAGES=images
+DOT=dot
 # Targets, files to build.
 
-GRAPH=$(IMAGES)/arch.png
+GRAPH=$(DOT)/arch.png
 
 %.svg:%.dot
 	$(DOT) -Tsvg $< -o $@
