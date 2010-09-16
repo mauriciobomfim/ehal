@@ -17,6 +17,7 @@ typedef signed long	s64;
 /* utilities */
 /** Get the number of elements of a static array */
 #define ARRAY_SIZE(x)	(sizeof(x) / sizeof(x[0]))
+
 /** Intermediate macro for concatenation. @see GLUE */
 #define GLUE2( x, y ) x ## y
 /** Macro for concatenating 2 C tokens. */
