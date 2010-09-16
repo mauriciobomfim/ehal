@@ -13,7 +13,7 @@ architectures and MCUs available in the market.
 
 With that, it will be possible create a driver only once and reuse it in any
 of the supported hardware by the ehal. This is second step and is getting
-planed. The GeLip - Generic Library Project.
+planed. The gelila - Generic Library Layer.
 
 But before that we need to...
 
