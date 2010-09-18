@@ -37,17 +37,10 @@ LDFLAGS=
 # Resources definition. No need to change, change the ifeq of specific MCUs.
 # Also... pio0 brings together the API sinse it gets included for any pio
 # usage.
-PIO0=	$(SPECIFIC_PATH)/pio0.c		\
-	$(GENERIC_PATH)/pio.c		\
+
+PIO=	$(SPECIFIC_PATH)/pio.c	\
 	$(SPECIFIC_PATH)/pio_specific.h	\
 	$(GENERIC_PATH)/pio.h
-
-PIO1=	$(SPECIFIC_PATH)/pio1.c $(PIO0)
-PIO2=	$(SPECIFIC_PATH)/pio2.c $(PIO1)
-PIO3=	$(SPECIFIC_PATH)/pio3.c $(PIO2)
-PIO4=	$(SPECIFIC_PATH)/pio4.c $(PIO3)
-PIO5=	$(SPECIFIC_PATH)/pio5.c $(PIO4)
-PIO6=	$(SPECIFIC_PATH)/pio6.c $(PIO5)
 
 SPIM0=	$(SPECIFIC_PATH)/spim0.c	\
 	$(SPECIFIC_PATH)/spim_specific.h
@@ -55,35 +48,28 @@ SPIM0=	$(SPECIFIC_PATH)/spim0.c	\
 # checking MCU resources
 
 ifeq ($(MCU),attiny25)
-PIO= $(PIO0)
 else
 
 ifeq ($(MCU),atmega8)
-PIO= $(PIO2)
 SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega88)
-PIO= $(PIO2)
 SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega16)
-PIO= $(PIO3)
 SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega32)
-PIO= $(PIO3)
 SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega128)
-PIO= $(PIO6)
 SPI= $(SPIM0)
 else # Don't have port for this one... but trying out any way.
-
-PIO= $(PIO0)
+	@echo unsuported mcu!
 endif
 endif
 endif
