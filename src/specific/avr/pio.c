@@ -37,7 +37,7 @@ static const struct pio pio[] = {
 #endif
 };
 
-u08 pio_write (u08 p, pio_t val, pio_t mask)
+u08 pio_write (u08 p, pio_t mask, pio_t val )
 {
 	if (p >= ARRAY_SIZE(pio)) return 1;
 	pio_mask (*pio[p].port, val, mask);
@@ -45,13 +45,13 @@ u08 pio_write (u08 p, pio_t val, pio_t mask)
 }
 
 /* same as pio_write when port is input. */
-u08 pio_pullup(u08 p, pio_t up, pio_t mask)
+u08 pio_pullup(u08 p, pio_t mask, pio_t up)
 	__attribute__ ((alias("pio_write")));
 
-u08 pio_dir (u08 p, pio_t dir, pio_t mask)
+u08 pio_dir (u08 p, pio_t mask, pio_t dir)
 {
 	if (p >= ARRAY_SIZE(pio)) return 1;
-	pio_mask (*pio[p].dir, dir, mask);
+	pio_mask (*pio[p].dir, ~dir, mask);
 	return 0;
 }
 

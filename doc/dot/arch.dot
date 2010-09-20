@@ -15,17 +15,28 @@ pio\
 - direction : pio_t\l\
 - read : pio_t\l\
 |\
-+ pio_write		(port : u08, val : pio_t, mask : pio_t)	: void\l\
-+ pio_read		(port : u08, mask : pio_t)		: pio_t\l\
-+ pio_dir		(port : u08, dir : pio_t, mask : pio_t)	: void\l\
-+ pio_pullup		(port : u08, pull : pio_t, mask : pio_t): void\l\
++ pio_write		(port : u08, val : pio_t, mask : pio_t)	: u08\l\
++ pio_read		(port : u08, mask : pio_t, *port: pio_t): u08\l\
++ pio_dir		(port : u08, dir : pio_t, mask : pio_t)	: u08\l\
++ pio_pullup		(port : u08, pull : pio_t, mask : pio_t): u08\l\
 }" ]
 		spim [ label="{\
-spim\
-||\
+spim : queue\
+|\
+|\
 + spim_init	(spi : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
 + spim_buswidth	(spi : u08, buswidth : u08) : void\l\
 + spim_xmit	(spi : u08, data : spi_t) : spi_t\l\
+}" ]
+		spim_int [ label="{\
+|\
++ tx : queue_t\l\
++ rx : queue_t\l\
+- xmit_end : function_pointer\l\
+|\
++ spim_init	(spi : u08, freq : u08, cpol : u08, cpha : u08) : void\l\
++ spim_signal	(spi : u08, spi_fnp_t callback)\l\
++ spim_int_xmit	(spi : u08) : void\l\
 }" ]
 		uart [ label="{\
 uart\

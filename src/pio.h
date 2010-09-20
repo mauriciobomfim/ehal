@@ -1,5 +1,5 @@
 /** @file
- * @brief PIO_API
+ * @brief 
  * @defgroup pio PIO
  * @{
  */
@@ -13,18 +13,18 @@
  * This don't need any change for adding a new port, change pio_specif.h
  * for this. Also, GLUE is defined at types.h */
 
-u08 pio_write	(u08 p, pio_t value, pio_t mask);
-u08 pio_dir	(u08 p, pio_t value, pio_t mask);
-u08 pio_pullup	(u08 p, pio_t value, pio_t mask);
-u08 pio_read	(u08 p, pio_t mask, pio_t *value);
-u08 pio_rt_exists (u08 port);
+u08 pio_write	(u08 p, pio_t mask, pio_t val);
+u08 pio_dir	(u08 p, pio_t mask, pio_t dir);
+u08 pio_pullup	(u08 p, pio_t mask, pio_t up);
+u08 pio_read	(u08 p, pio_t mask, pio_t *read);
 /** @} */
 
 /** @brief helper for generating the pio_pin enum. @see pio_pin_names */
 #define PIO_PIN_NAME(X) ((pio_t)1<<(X))
 
-/** Macro to refer to all pins of a given PORT, pio_write( 0, 0, PIO_ALL )*/
-#define PIO_ALL		((pio_t)-1)
+/** Macro to refer to all pins of a given PORT,
+ * pio_write (0, 0, PIO_ALL_PINS); */
+#define PIO_ALL_PINS		((pio_t)-1)
 
 /* Pin symbolic names for easy usage. */
 /** @brief Each P is the 1<<N where N is its number. This avoid (1<<N) for
