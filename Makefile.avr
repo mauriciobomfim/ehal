@@ -2,34 +2,35 @@
 CC=avr-gcc
 AR=avr-ar
 MKDIR=mkdir
-CP=cp
+CP=cp -f
 RM=rm
 
 # Final name
 LIB=libehal-$(MCU).a
 
-#TODO: trocar orientacao do build arquivo para recurso.
-# if( $(MCU), atmega8 )
-# PIO = PIO1 ...
-# SPI = SPI1 ...
-# se nao tiver nada
-
 # Get the lib folder based on the toolchain location.
-LIB_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/lib
-INC_INSTALL_DIR=$(shell dirname $(shell which avr-gcc))/../avr/include/ehal
+LIB_INSTALL_DIR=$(shell dirname $(shell which $(CC)))/../avr/lib
+INC_INSTALL_DIR=$(shell dirname $(shell which $(CC)))/../avr/include/ehal
 
 # Get folders from within ehal.
 GENERIC_PATH=src
 SPECIFIC_PATH=src/specific/$(ARCH)
 
-CFLAGS=-Wall -ansi -Os -funsigned-char -funsigned-bitfields -fpack-struct \
-	-fshort-enums -ffunction-sections -fno-inline-small-functions     \
-	-fno-split-wide-types -fno-tree-scev-cprop
+CDEBUG =-gdwarf-2
+CWARN =-Wall -Wstrict-prototypes
+ONCE_FLAGS =--combine  -fwhole-program
+CTUNING =-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
+-ffunction-sections -fno-inline-small-functions -fno-split-wide-types \
+-fno-tree-scev-cprop -Wl,--relax,--gc-sections
 INCLUDE_DIR=					\
 		-I.				\
 		-I./src				\
 		-I./src/specific/		\
 		-I./$(SPECIFIC_PATH)
+
+CFLAGS = $(CDEBUG) $(CDEFS) $(CINCS) -Os $(CWARN) $(CSTANDARD) \
+$(CEXTRA) $(INCLUDE_DIR)
+
 ALL_CFLAGS=-mmcu=$(MCU) $(CFLAGS) $(INCLUDE_DIR)
 
 LDFLAGS=
@@ -38,11 +39,11 @@ LDFLAGS=
 # Also... pio0 brings together the API sinse it gets included for any pio
 # usage.
 
-PIO=	$(SPECIFIC_PATH)/pio.c	\
+PIO=	$(SPECIFIC_PATH)/pio.c		\
 	$(SPECIFIC_PATH)/pio_specific.h	\
 	$(GENERIC_PATH)/pio.h
 
-SPIM0=	$(SPECIFIC_PATH)/spim0.c	\
+SPIM=	$(SPECIFIC_PATH)/spim.c		\
 	$(SPECIFIC_PATH)/spim_specific.h
 
 # checking MCU resources
@@ -51,23 +52,18 @@ ifeq ($(MCU),attiny25)
 else
 
 ifeq ($(MCU),atmega8)
-SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega88)
-SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega16)
-SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega32)
-SPI= $(SPIM0)
 else
 
 ifeq ($(MCU),atmega128)
-SPI= $(SPIM0)
 else # Don't have port for this one... but trying out any way.
 	@echo unsuported mcu!
 endif
@@ -91,7 +87,6 @@ DMA=
 
 # .c + .h
 RESOURCES=	$(PIO)		\
-		$(SPI_SRC)	\
 		$(GENERIC_PATH)/types.h
 # .h only
 INC=$(filter %.h, $(RESOURCES))
@@ -99,9 +94,10 @@ INC=$(filter %.h, $(RESOURCES))
 SRC=$(filter %.c, $(RESOURCES))
 OBJ=$(SRC:.c=.o)
 
+.PHONY: all install clean
 all: $(LIB)
 
-install: all
+install:
 	$(MKDIR) -p $(INC_INSTALL_DIR)
 	$(CP) $(LIB) $(LIB_INSTALL_DIR)
 	$(CP) $(INC) $(INC_INSTALL_DIR)
@@ -110,11 +106,10 @@ $(LIB): $(OBJ)
 	$(AR) rcs $@ $^
 
 %.elf: $(OBJ)
-	$(CC) $(ALL_CFLAGS) $^ $@ $(LDFLAGS)
+	$(CC) $(ALL_CFLAGS) $(LDFLAGS) $^ $@
 
 .c.o:
-	$(CC) -c -o $@ $< $(ALL_CFLAGS)
+	$(CC) $(ALL_CFLAGS) -c -o $@ $<
 
-.PHONY:
 clean:
 	$(RM) -f $(OBJ) $(LIB)
