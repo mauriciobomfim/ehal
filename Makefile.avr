@@ -13,8 +13,8 @@ LIB_INSTALL_DIR=$(shell dirname $(shell which $(CC)))/../avr/lib
 INC_INSTALL_DIR=$(shell dirname $(shell which $(CC)))/../avr/include/ehal
 
 # Get folders from within ehal.
-GENERIC_PATH=src
-SPECIFIC_PATH=src/specific/$(ARCH)
+GENERIC_PATH=ehal
+SPECIFIC_PATH=ehal/specific/$(ARCH)
 
 CDEBUG =-gdwarf-2
 CWARN =-Wall -Wstrict-prototypes
@@ -24,8 +24,8 @@ CTUNING =-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
 -fno-tree-scev-cprop -Wl,--relax,--gc-sections
 INCLUDE_DIR=					\
 		-I.				\
-		-I./src				\
-		-I./src/specific/		\
+		-I./ehal			\
+		-I./ehal/specific/		\
 		-I./$(SPECIFIC_PATH)
 
 CFLAGS = $(CDEBUG) $(CDEFS) $(CINCS) -Os $(CWARN) $(CSTANDARD) \
