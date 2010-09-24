@@ -17,6 +17,7 @@ u08 pio_write	(u08 p, pio_t mask, pio_t val);
 u08 pio_dir	(u08 p, pio_t mask, pio_t dir);
 u08 pio_pullup	(u08 p, pio_t mask, pio_t up);
 u08 pio_read	(u08 p, pio_t mask, pio_t *read);
+
 /** @} */
 
 /** @brief helper for generating the pio_pin enum. @see pio_pin_names */
