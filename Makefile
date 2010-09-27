@@ -15,6 +15,8 @@ GRAPH=$(DOT)/arch.png
 %.png:%.dot
 	$(DOT) -Tpng $< -o $@
 
+
+
 .PHONY: all clean graph html
 all:$(GRAPH)
 
@@ -25,3 +27,6 @@ graph:$(GRAPH)
 
 clean:
 	$(RM) $(HTML) $(GRAPH)
+pdf:
+	mpost architecture.mp
+	pdflatex ehal.tex
