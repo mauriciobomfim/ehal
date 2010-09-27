@@ -1,6 +1,0 @@
-= LOG =
-
-- Sat Sep 11 03:35:07 UTC 2010 - Added wraper to pioN functions.
-- Sat Sep 11 06:04:27 UTC 2010 - Using asciidoc to create documentation.
-- Sat Sep 11 17:05:36 UTC 2010 - Started Manual, it is under doc/manual.
-- Sat Sep 11 22:13:16 UTC 2010 - Removed manual/ it is now under doc.
