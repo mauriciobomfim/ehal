@@ -39,11 +39,17 @@ LDFLAGS=
 # Also... pio0 brings together the API sinse it gets included for any pio
 # usage.
 
-PIO=	$(SPECIFIC_PATH)/pio.c		\
+PORT=					\
+	$(SPECIFIC_PATH)/port.c		\
+	$(SPECIFIC_PATH)/port_specific.h\
+	$(GENERIC_PATH)/port.h
+PIO=					\
+	$(SPECIFIC_PATH)/pio.c		\
 	$(SPECIFIC_PATH)/pio_specific.h	\
 	$(GENERIC_PATH)/pio.h
 
-SPIM=	$(SPECIFIC_PATH)/spim.c		\
+SPIM=					\
+	$(SPECIFIC_PATH)/spim.c		\
 	$(SPECIFIC_PATH)/spim_specific.h
 
 # checking MCU resources
@@ -65,7 +71,7 @@ else
 
 ifeq ($(MCU),atmega128)
 else # Don't have port for this one... but trying out any way.
-	@echo unsuported mcu!
+	@echo Possibly unsuported mcu!
 endif
 endif
 endif
@@ -86,7 +92,7 @@ ETH=
 DMA=
 
 # .c + .h
-RESOURCES=	$(PIO)		\
+RESOURCES=	$(PORT)		\
 		$(GENERIC_PATH)/types.h
 # .h only
 INC=$(filter %.h, $(RESOURCES))
