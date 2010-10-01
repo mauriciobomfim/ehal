@@ -1,7 +1,12 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
-struct queue;
+struct queue {
+	unsigned char *buff;
+	unsigned char sz;
+	unsigned char s;
+	unsigned char ocupied;
+};
 
 void
 queue_init	(struct queue *q,

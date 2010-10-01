@@ -1,12 +1,5 @@
 #include "queue.h"
 
-struct queue {
-	unsigned char *buff;
-	unsigned char sz;
-	unsigned char s;
-	unsigned char ocupied;
-};
-
 void queue_init (struct queue *q,
 		unsigned char *buff,
 		unsigned char sz )
@@ -30,7 +23,7 @@ unsigned char queue_full (struct queue *q)
 
 unsigned char queue_empty (struct queue *q)
 {
-	return q->sz == 0;
+	return q->ocupied == 0;
 }
 
 unsigned char queue_peak (struct queue *q, unsigned char *ret)
