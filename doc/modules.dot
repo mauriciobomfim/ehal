@@ -1,0 +1,44 @@
+digraph G {
+	node [	fontname = "Bitstream Vera Sans Mono"
+		shape = "record"
+		fontsize = 12 ];
+        edge [	fontname = "Bitstream Vera Sans Mono"
+		fontsize = 8 ];
+	ratio ="fill";
+	label="Modules";
+/*------------------------------------------------------------------------*/
+	subgraph cluster_ehal {
+		label="eHAL\l* hw independent";
+		queue [label="*queue"];
+		rwlock [label="*rwlock"];
+		ppio;
+		spim;
+		spis;
+		uart;
+		i2cm;
+		i2cs;
+		spim;
+		spis;
+		uart;
+		i2cm;
+		i2cs;
+		tmr;
+		adc;
+		pwm;
+		eeprom;
+		rtc;
+		ccp;
+		eth;
+		dma;
+	}
+
+/*------------------------------------------------------------------------*/
+	subgraph cluster_gelila {
+		label="Drivers";
+
+		hd44780 -> ppio;
+		ks0108b -> ppio;
+		ds1307 -> i2cm;
+		gps -> uart;
+	}
+}

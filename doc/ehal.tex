@@ -1,0 +1,24 @@
+\documentclass{article}
+
+% The following is needed in order to make the code compatible
+% with both latex/dvips and pdflatex.
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\title{eHAL}
+\author{Marcelo Politzer Couto}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+\subsection{port-pin I/O}
+\includegraphics{arch.1}
+
+\end{document}
