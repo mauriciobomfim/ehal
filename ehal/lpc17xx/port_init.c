@@ -1,7 +1,8 @@
 #include "port.h"
+#include "LPC17xx.h"
 
 #define BIND_INDEX_WITH_PORT(BLOCK_START)\
-	(struct port_mem_block *)&PIN ## BLOCK_START
+	(struct port_mem_block *)&LPC_GPIO0 ## BLOCK_START
 
 #if defined (ehal_lpc1768)
 struct port_mem_block *port_mem_block[] = {
