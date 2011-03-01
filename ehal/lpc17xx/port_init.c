@@ -1,13 +1,15 @@
+#include<stdio.h>
 #include "port.h"
-#include "LPC17xx.h"
+//#include "LPC17xx.h"
+#include "port_specific.h"
 
 #define BIND_INDEX_WITH_PORT(BLOCK_START)\
-	(struct port_mem_block *)&LPC_GPIO0 ## BLOCK_START
+	(struct port_mem_block *) LPC_GPIO ## BLOCK_START
 
 #if defined (ehal_lpc1768)
 struct port_mem_block *port_mem_block[] = {
-	BIND_INDEX_WITH_PORT (1),
-	BIND_INDEX_WITH_PORT (2),
+	BIND_INDEX_WITH_PORT(0),
+	BIND_INDEX_WITH_PORT(1)
 };
 #else
 #error MCU not defined in ehal/lpc17xx/port_init.c
